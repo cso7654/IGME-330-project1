@@ -39,6 +39,14 @@
 		},
 		compileColor(color){
 			return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+		},
+		getStagePercentage(stage, maxStage, progress){
+			if (stage >= maxStage){
+				return 1;
+			}
+			let minPerc = stage / maxStage;
+			let maxPerc = (stage + 1) / maxStage;
+			return Math.max(0, (progress - minPerc) / (maxPerc - minPerc));
 		}
 	};
 
