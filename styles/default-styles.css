@@ -3,9 +3,9 @@ body{
 	padding: none;
 }
 canvas{
+	margin: 0;
 	width: 100%;
-	height: calc(100vh - 10rem);
-	position: absolute;
+	height: calc(100vh - 15rem);
 	top: 0;
 	left: 0;
 }

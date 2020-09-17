@@ -9,8 +9,31 @@
 	</head>
 	<body>
 		<canvas id="canvas" width=640 height=480></canvas>
-		<div id="controls">
-			
-		</div>
+		<h1>Click to drop a seed</h1>
+		<section id="controls">
+			<select id="presets">
+				<option value="borad" selected>Broad tree</option>
+				<option value="skinny">Skinny tree</option>
+				<option value="custom" id="customPreset">Custom</option>
+			</select>
+			<section id="parameters">
+				<label for="trunkLengthSlider">Trunk Length</label>
+				<input id="trunkLengthSlider" name="trunkLengthSlider" type="range" value="50" min="50" max="300">
+
+				<label for="trunkWidthSlider">Trunk Width</label>
+				<input id="trunkWidthSlider" name="trunkWidthSlider" type="range" value="0" min="0" max="100">
+					
+				<label for="branchLengthMultiplierSlider">Branch Length Multiplier</label>
+				<input id="branchLengthMultiplierSlider" name="branchLengthMultiplierSlider" type="range" value="1" min="1" max="150">
+					
+				<label for="branchLengthVarianceSlider">Branch Length Variance</label>
+				<input id="branchLengthVarianceSlider" name="branchLengthVarianceSlider" type="range" value="1" min="1" max="100">
+					
+				<label for="branchWidthMultiplierSlider">Branch Width Multiplier</label>
+				<input id="branchWidthMultiplierSlider" name="branchWidthMultiplierSlider" type="range" value="1" min="1" max="100">
+
+				<p>NOT ALL CONTROLS IMPLEMENTED</p>
+			</section>
+		</section>
 	</body>
 </html>

@@ -1,7 +1,7 @@
 "use strict";
 
 (function() {
-	let canvas, ctx;
+	let canvas, ctx, presetSelector, currentParams, paramSection, paramControls = {};
 	//Keep an array of trees grown
 	let trees = [];
 	let seeds = [];
@@ -22,34 +22,21 @@
 						groundBaseColor: "rgba(124, 161, 117, 1)",
 						groundFadeColor: "rgba(56, 102, 48, 1)",
 						groundGradient: undefined};
-	let treeParams = [];
+	const treePresets = [];
+	let customPreset = {};
+	let customPresetOption;
 
 	window.addEventListener("load", function(e){
 		//Initialize canvas and context
 		canvas = document.querySelector("canvas");
 		ctx = canvas.getContext("2d");
+		paramSection = document.querySelector("section#parameters");
 		//Update canvas dimensions to be 1-to-1 with display for better graphics
 		resizeCanvas();
 
-		//Initialize tree parameters with canvas info so it scales for every screen
-		treeParams.push({trunkColor: {r: 82, g: 70, b: 50, a: 1},
-					leafColor: {r: 85, g: 173, b:81, a:1},
-					trunkLength: globalParams.unit * 1.75,
-					trunkWidth: globalParams.unit / 2,
-					branchLengthMultiplier: 0.75,
-					branchLengthVariance: 0.25,
-					branchWidthMultiplier: 0.75,
-					branchWidthVariance: 0.05,
-					maxLayers: 6,
-					minLayers: 3,
-					branchChance: 0.75,
-					branchAngleVariance: 0.5,
-					leafSize: globalParams.unit / 2,
-					leafSizeVariance: 0.75,
-					leafColorVariance: 0.1,
-					leafBunches: 3,
-					growthTime: 60,
-					branchGrowthStages: 3});
+		initTreePresets();
+		initControls();
+		updateControls();
 
 		//Mouse move
 		canvas.addEventListener("mousemove", function(e){
@@ -66,7 +53,7 @@
 			let y = e.clientY - rect.y;
 
 			if (x > 0 && x < rect.width && y > 0 && y < rect.height){
-				dropSeed(x, y, treeParams[0]);
+				dropSeed(x, y, currentParams);
 			}
 		});
 
@@ -74,16 +61,156 @@
 			resizeCanvas();
 		});
 
-		//trees.push(createTree(500, 500));
+		//Preset selection
+		presetSelector.addEventListener("change", function(e){
+			setPreset(e.target.value);
+		});
 
 		setInterval(update, delta);
+
+		function initControls(){
+			//Initialize controls
+			presetSelector = document.querySelector("select#presets");
+			customPresetOption = presetSelector.querySelector("option#customPreset");
+			//Parameter inputs
+			paramControls.trunkWidthSlider = document.querySelector("input#trunkWidthSlider");
+			paramControls.trunkWidthSlider.addEventListener("change", function(e){
+				setToCustomPreset();
+				currentParams.trunkWidth = e.target.value / 100 * globalParams.unit;
+				updateControls();
+			});
+
+			paramControls.trunkLengthSlider = document.querySelector("input#trunkLengthSlider");
+			paramControls.trunkLengthSlider.addEventListener("change", function(e){
+				setToCustomPreset();
+				currentParams.trunkLength = e.target.value / 100 * globalParams.unit;
+				updateControls();
+			});
+
+			paramControls.branchLengthMultiplierSlider = document.querySelector("input#branchLengthMultiplierSlider");
+			paramControls.branchLengthMultiplierSlider.addEventListener("change", function(e){
+				setToCustomPreset();
+				currentParams.branchLengthMultiplier = e.target.value / 100;
+				updateControls();
+			});
+			
+			paramControls.branchLengthVarianceSlider = document.querySelector("input#branchLengthVarianceSlider");
+			paramControls.branchLengthVarianceSlider.addEventListener("change", function(e){
+				setToCustomPreset();
+				currentParams.branchLengthVariance = e.target.value / 100;
+				updateControls();
+			});
+
+			paramControls.branchWidthMultiplierSlider = document.querySelector("input#branchWidthMultiplierSlider");
+			paramControls.branchWidthMultiplierSlider.addEventListener("change", function(e){
+				setToCustomPreset();
+				currentParams.branchWidthMultiplier = e.target.value / 100;
+				updateControls();
+			});
+		}
+
+		function initTreePresets(){
+			//Initialize tree parameters with canvas info so it scales for every screen
+			//Broad preset
+			treePresets.push({trunkColor: {r: 115, g: 106, b: 83, a: 1},
+				leafColor: {r: 93, g: 186, b: 76, a:1},
+				trunkLength: globalParams.unit * 2,
+				trunkWidth: globalParams.unit / 2,
+				branchLengthMultiplier: 0.8,
+				branchLengthVariance: 0.25,
+				branchWidthMultiplier: 0.75,
+				branchWidthVariance: 0.05,
+				maxLayers: 7,
+				minLayers: 3,
+				branchChance: 0.75,
+				branchAngleVariance: 0.6,
+				leafSize: globalParams.unit / 2,
+				leafSizeVariance: 0.75,
+				leafColorVariance: 0.15,
+				leafBunches: 3,
+				growthTime: 60,
+				branchGrowthStages: 3});
+
+			//Skinny preset
+			treePresets.push({trunkColor: {r: 82, g: 70, b: 50, a: 1},
+				leafColor: {r: 160, g: 212, b: 123, a:1},
+				trunkLength: globalParams.unit * 2,
+				trunkWidth: globalParams.unit / 3,
+				branchLengthMultiplier: 0.75,
+				branchLengthVariance: 0.25,
+				branchWidthMultiplier: 0.75,
+				branchWidthVariance: 0.05,
+				maxLayers: 8,
+				minLayers: 3,
+				branchChance: 0.5,
+				branchAngleVariance: 0.25,
+				leafSize: globalParams.unit / 2,
+				leafSizeVariance: 0.75,
+				leafColorVariance: 0.1,
+				leafBunches: 3,
+				growthTime: 40,
+				branchGrowthStages: 3});
+			
+			//Copy oak preset for custom
+			customPreset = {trunkColor: {r: 115, g: 106, b: 83, a: 1},
+				leafColor: {r: 93, g: 186, b: 76, a:1},
+				trunkLength: globalParams.unit * 2,
+				trunkWidth: globalParams.unit / 2,
+				branchLengthMultiplier: 0.8,
+				branchLengthVariance: 0.25,
+				branchWidthMultiplier: 0.75,
+				branchWidthVariance: 0.05,
+				maxLayers: 7,
+				minLayers: 3,
+				branchChance: 0.75,
+				branchAngleVariance: 0.5,
+				leafSize: globalParams.unit / 2,
+				leafSizeVariance: 0.75,
+				leafColorVariance: 0.15,
+				leafBunches: 3,
+				growthTime: 60,
+				branchGrowthStages: 3};
+
+			currentParams = treePresets[0];
+		}
 	});
+
+	function setToCustomPreset(){
+		if (presetSelector.value != "custom"){
+			presetSelector.value = "custom";
+			currentParams = customPreset;
+		}
+	}
+
+	function setPreset(value){
+		switch (value){
+			default:
+				currentParams = treePresets[0];
+				break;
+			case "skinny":
+				currentParams = treePresets[1];
+				break;
+			case "custom":
+				currentParams = customPreset;
+				break;
+		}
+		updateControls();
+	}
+
+	function updateControls(){
+		paramControls.trunkLengthSlider.value = currentParams.trunkLength / globalParams.unit * 100;
+		paramControls.trunkWidthSlider.value = currentParams.trunkWidth / globalParams.unit * 100;
+		paramControls.branchLengthMultiplierSlider.value = currentParams.branchLengthMultiplier * 100;
+		paramControls.branchLengthVarianceSlider.value = currentParams.branchLengthVariance * 100;
+		paramControls.branchWidthMultiplierSlider.value = currentParams.branchWidthMultiplier * 100;
+
+	}
 
 	function resizeCanvas(){
 		canvas.width = canvas.offsetWidth;
 		canvas.height = canvas.offsetHeight;
 		//Update parameters that are based on canvas size
-		globalParams.unit = canvas.height / 15;
+		globalParams.unit = canvas.height / 20;
 		globalParams.groundHeight = canvas.height - globalParams.unit * 3;
 		globalParams.treeBaseLevel = canvas.height - globalParams.unit * 2;
 		globalParams.seedRadius = globalParams.unit / 4;
