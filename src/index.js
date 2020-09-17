@@ -1,7 +1,7 @@
 "use strict";
 
 (function() {
-	let canvas, ctx, presetSelector, currentParams, paramSection, paramControls = {};
+	let canvas, ctx, presetSelector, currentParams, paramSection, paramControls = {}, resetButton;
 	//Keep an array of trees grown
 	let trees = [];
 	let seeds = [];
@@ -31,6 +31,7 @@
 		canvas = document.querySelector("canvas");
 		ctx = canvas.getContext("2d");
 		paramSection = document.querySelector("section#parameters");
+		resetButton = document.querySelector("input#resetButton");
 		//Update canvas dimensions to be 1-to-1 with display for better graphics
 		resizeCanvas();
 
@@ -69,41 +70,41 @@
 		setInterval(update, delta);
 
 		function initControls(){
+			//Reset button
+			resetButton.addEventListener("click", function(){
+				setPreset(presetSelector.value);
+			});
+
 			//Initialize controls
 			presetSelector = document.querySelector("select#presets");
 			customPresetOption = presetSelector.querySelector("option#customPreset");
 			//Parameter inputs
 			paramControls.trunkWidthSlider = document.querySelector("input#trunkWidthSlider");
 			paramControls.trunkWidthSlider.addEventListener("change", function(e){
-				setToCustomPreset();
 				currentParams.trunkWidth = e.target.value / 100 * globalParams.unit;
 				updateControls();
 			});
 
 			paramControls.trunkLengthSlider = document.querySelector("input#trunkLengthSlider");
 			paramControls.trunkLengthSlider.addEventListener("change", function(e){
-				setToCustomPreset();
 				currentParams.trunkLength = e.target.value / 100 * globalParams.unit;
 				updateControls();
 			});
 
 			paramControls.branchLengthMultiplierSlider = document.querySelector("input#branchLengthMultiplierSlider");
 			paramControls.branchLengthMultiplierSlider.addEventListener("change", function(e){
-				setToCustomPreset();
 				currentParams.branchLengthMultiplier = e.target.value / 100;
 				updateControls();
 			});
 			
 			paramControls.branchLengthVarianceSlider = document.querySelector("input#branchLengthVarianceSlider");
 			paramControls.branchLengthVarianceSlider.addEventListener("change", function(e){
-				setToCustomPreset();
 				currentParams.branchLengthVariance = e.target.value / 100;
 				updateControls();
 			});
 
 			paramControls.branchWidthMultiplierSlider = document.querySelector("input#branchWidthMultiplierSlider");
 			paramControls.branchWidthMultiplierSlider.addEventListener("change", function(e){
-				setToCustomPreset();
 				currentParams.branchWidthMultiplier = e.target.value / 100;
 				updateControls();
 			});
@@ -171,24 +172,17 @@
 				growthTime: 60,
 				branchGrowthStages: 3};
 
-			currentParams = treePresets[0];
+			currentParams = JSON.parse(JSON.stringify(treePresets[0]));
 		}
 	});
-
-	function setToCustomPreset(){
-		if (presetSelector.value != "custom"){
-			presetSelector.value = "custom";
-			currentParams = customPreset;
-		}
-	}
 
 	function setPreset(value){
 		switch (value){
 			default:
-				currentParams = treePresets[0];
+				currentParams = JSON.parse(JSON.stringify(treePresets[0]));
 				break;
 			case "skinny":
-				currentParams = treePresets[1];
+				currentParams = JSON.parse(JSON.stringify(treePresets[1]));
 				break;
 			case "custom":
 				currentParams = customPreset;
