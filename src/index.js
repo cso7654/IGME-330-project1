@@ -21,7 +21,8 @@
 						skyGradient: undefined,
 						groundBaseColor: "rgba(124, 161, 117, 1)",
 						groundFadeColor: "rgba(56, 102, 48, 1)",
-						groundGradient: undefined};
+						groundGradient: undefined,
+						windSpeed: 1};
 	const treePresets = [];
 	let customPreset = {};
 	let customPresetOption;
@@ -79,6 +80,39 @@
 			presetSelector = document.querySelector("select#presets");
 			customPresetOption = presetSelector.querySelector("option#customPreset");
 			//Parameter inputs
+
+			paramControls.branchRSlider = document.querySelector("input#branchRSlider");
+			paramControls.branchRSlider.addEventListener("change", function(e){
+				currentParams.trunkColor.r = e.target.value;
+				updateControls();
+			});			
+			paramControls.branchGSlider = document.querySelector("input#branchGSlider");
+			paramControls.branchGSlider.addEventListener("change", function(e){
+				currentParams.trunkColor.g = e.target.value;
+				updateControls();
+			});				
+			paramControls.branchBSlider = document.querySelector("input#branchBSlider");
+			paramControls.branchBSlider.addEventListener("change", function(e){
+				currentParams.trunkColor.b = e.target.value;
+				updateControls();
+			});	
+
+			paramControls.leafRSlider = document.querySelector("input#leafRSlider");
+			paramControls.leafRSlider.addEventListener("change", function(e){
+				currentParams.leafColor.r = e.target.value;
+				updateControls();
+			});			
+			paramControls.leafGSlider = document.querySelector("input#leafGSlider");
+			paramControls.leafGSlider.addEventListener("change", function(e){
+				currentParams.leafColor.g = e.target.value;
+				updateControls();
+			});				
+			paramControls.leafBSlider = document.querySelector("input#leafBSlider");
+			paramControls.leafBSlider.addEventListener("change", function(e){
+				currentParams.leafColor.b = e.target.value;
+				updateControls();
+			});	
+
 			paramControls.trunkWidthSlider = document.querySelector("input#trunkWidthSlider");
 			paramControls.trunkWidthSlider.addEventListener("change", function(e){
 				currentParams.trunkWidth = e.target.value / 100 * globalParams.unit;
@@ -106,6 +140,72 @@
 			paramControls.branchWidthMultiplierSlider = document.querySelector("input#branchWidthMultiplierSlider");
 			paramControls.branchWidthMultiplierSlider.addEventListener("change", function(e){
 				currentParams.branchWidthMultiplier = e.target.value / 100;
+				updateControls();
+			});
+		
+			paramControls.branchWidthVarianceSlider = document.querySelector("input#branchWidthVarianceSlider");
+			paramControls.branchWidthVarianceSlider.addEventListener("change", function(e){
+				currentParams.branchWidthVariance = e.target.value / 100;
+				updateControls();
+			});
+
+			paramControls.maxLayersSlider = document.querySelector("input#maxLayersSlider");
+			paramControls.maxLayersSlider.addEventListener("change", function(e){
+				currentParams.maxLayers = e.target.value;
+				updateControls();
+			});
+
+			paramControls.minLayersSlider = document.querySelector("input#minLayersSlider");
+			paramControls.minLayersSlider.addEventListener("change", function(e){
+				currentParams.minLayers = e.target.value;
+				updateControls();
+			});
+
+			paramControls.branchChanceSlider = document.querySelector("input#branchChanceSlider");
+			paramControls.branchChanceSlider.addEventListener("change", function(e){
+				currentParams.branchChance = e.target.value / 100;
+				updateControls();
+			});
+
+			paramControls.branchAngleVarianceSlider = document.querySelector("input#branchAngleVarianceSlider");
+			paramControls.branchAngleVarianceSlider.addEventListener("change", function(e){
+				currentParams.branchAngleVariance = e.target.value / 100;
+				updateControls();
+			});
+
+			paramControls.leafSizeSlider = document.querySelector("input#leafSizeSlider");
+			paramControls.leafSizeSlider.addEventListener("change", function(e){
+				currentParams.leafSize = e.target.value / 100 * globalParams.unit;
+				updateControls();
+			});
+
+			paramControls.leafSizeVarianceSlider = document.querySelector("input#leafSizeVarianceSlider");
+			paramControls.leafSizeVarianceSlider.addEventListener("change", function(e){
+				currentParams.leafSizeVariance = e.target.value / 100;
+				updateControls();
+			});
+
+			paramControls.leafColorVarianceSlider = document.querySelector("input#leafColorVarianceSlider");
+			paramControls.leafColorVarianceSlider.addEventListener("change", function(e){
+				currentParams.leafColorVariance = e.target.value / 100;
+				updateControls();
+			});
+
+			paramControls.leafBunchesSlider = document.querySelector("input#leafBunchesSlider");
+			paramControls.leafBunchesSlider.addEventListener("change", function(e){
+				currentParams.leafBunches = e.target.value;
+				updateControls();
+			});
+
+			paramControls.growthTimeSlider = document.querySelector("input#growthTimeSlider");
+			paramControls.growthTimeSlider.addEventListener("change", function(e){
+				currentParams.growthTime = e.target.value;
+				updateControls();
+			});
+
+			paramControls.branchGrowthStagesSlider = document.querySelector("input#branchGrowthStagesSlider");
+			paramControls.branchGrowthStagesSlider.addEventListener("change", function(e){
+				currentParams.branchGrowthStages = e.target.value;
 				updateControls();
 			});
 		}
@@ -192,11 +292,30 @@
 	}
 
 	function updateControls(){
+		paramControls.branchRSlider.value = currentParams.trunkColor.r;
+		paramControls.branchGSlider.value = currentParams.trunkColor.g;
+		paramControls.branchBSlider.value = currentParams.trunkColor.b;
+
+		paramControls.leafRSlider.value = currentParams.leafColor.r;
+		paramControls.leafGSlider.value = currentParams.leafColor.g;
+		paramControls.leafBSlider.value = currentParams.leafColor.b;
+
 		paramControls.trunkLengthSlider.value = currentParams.trunkLength / globalParams.unit * 100;
 		paramControls.trunkWidthSlider.value = currentParams.trunkWidth / globalParams.unit * 100;
 		paramControls.branchLengthMultiplierSlider.value = currentParams.branchLengthMultiplier * 100;
 		paramControls.branchLengthVarianceSlider.value = currentParams.branchLengthVariance * 100;
 		paramControls.branchWidthMultiplierSlider.value = currentParams.branchWidthMultiplier * 100;
+		paramControls.branchWidthVarianceSlider.value = currentParams.branchWidthVariance * 100;
+		paramControls.maxLayersSlider.value = currentParams.maxLayers;
+		paramControls.minLayersSlider.value = currentParams.minLayers;
+		paramControls.branchChanceSlider.value = currentParams.branchChance * 100;
+		paramControls.branchAngleVarianceSlider.value = currentParams.branchAngleVariance * 100;
+		paramControls.leafSizeSlider.value = currentParams.leafSize / globalParams.unit * 100;
+		paramControls.leafSizeVarianceSlider.value = currentParams.leafSizeVariance * 100;
+		paramControls.leafColorVarianceSlider.value = currentParams.leafColorVariance * 100;
+		paramControls.leafBunchesSlider.value = currentParams.leafBunches;
+		paramControls.growthTimeSlider.value = currentParams.growthTime;
+		paramControls.branchGrowthStagesSlider.value = currentParams.branchGrowthStages;
 
 	}
 
@@ -237,6 +356,19 @@
 
 		function updateTree(tree){
 			tree.age += delta / 1000;
+
+			updateBranch(tree.branches[0]);
+			function updateBranch(branch){
+				if (branch.hasOwnProperty("leaves")){
+					for (let leaf of branch.leaves){
+						leaf.time += delta / 1000;
+					}
+				}else{
+					for (let subBranch of branch.branches){
+						updateBranch(subBranch);
+					}	
+				}
+			}
 		}
 		function updateSeed(seed){
 			seed.vel += (delta * globalParams.gravity / 1000) * globalParams.unit / 20;
@@ -259,7 +391,7 @@
 	function createTree(xPos, yPos, params){
 		let trunk = {branches: [], length: params.trunkLength, angle: -Math.PI / 2, x: xPos, y: yPos, width: params.trunkWidth, layer: 0};
 		//trunk.push({branches: [], length: 100, angle: Math.PI / 2, x: xPos, y: yPos});
-		let tree = {params: params, x: xPos, y: yPos, branches: [trunk], age: 0, layers: 0};
+		let tree = {params: JSON.parse(JSON.stringify(params)), x: xPos, y: yPos, branches: [trunk], age: 0, layers: 0};
 		generateBranches(trunk, tree);
 
 		return tree;
@@ -307,7 +439,7 @@
 						let radius = csoLIB.getRandomVariance(tree.params.leafSize, tree.params.leafSizeVariance, true);
 						// let x = x1 + Math.cos(rot + dTheta * i) * radius;
 						// let y = y1 + Math.sin(rot + dTheta * i) * radius;
-						leaves.push({x: x1, y: y1, radius: radius, theta: rot + dTheta * i, 
+						leaves.push({x: x1, y: y1, radius: radius, theta: rot + dTheta * i, time: Math.random() * 0.75, 
 							 colorShift: 1 + csoLIB.getRandom(-tree.params.leafColorVariance, tree.params.leafColorVariance)});
 					}
 					branch.leaves = leaves;
@@ -377,11 +509,11 @@
 
 				if (branch.hasOwnProperty("leaves") && layer > branch.layer){
 					let percentage = Math.min(csoLIB.getStagePercentage(branch.layer + 1, tree.layers + 2, progress), 1);
-					//console.log(layer + "   " + tree.layers + "   " + percentage);
 					for (let leaves of branch.leaves){
 						let radius = leaves.radius * percentage;
-						let x = leaves.x + Math.cos(leaves.theta) * radius;
-						let y = leaves.y + Math.sin(leaves.theta) * radius;
+						let theta = getLeafTheta(leaves.theta, leaves.time);
+						let x = leaves.x + Math.cos(theta) * radius;
+						let y = leaves.y + Math.sin(theta) * radius;
 						ctx.fillStyle = csoLIB.compileColor(csoLIB.multiplyColorRGB(tree.params.leafColor, leaves.colorShift));
 						ctx.beginPath();
 						ctx.arc(x, y, radius, 0, Math.PI * 2);
@@ -403,6 +535,14 @@
 			ctx.fill();
 			ctx.restore();
 		}
+	}
+
+	function getLeafTheta(theta, time){
+		return theta + Math.sin(globalParams.windSpeed * time) * (Math.PI / 4);
+	}
+
+	function getBranchTheta(theta, time){
+		return theta + Math.sin(globalParams.windSpeed * time) * (Math.PI / 10);
 	}
 
 })();
