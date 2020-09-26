@@ -1,7 +1,7 @@
 "use strict";
 
 (function() {
-	let canvas, ctx, presetSelector, currentParams, paramSection, paramControls = {}, resetButton;
+	let canvas, ctx, presetSelector, currentParams, paramSection, menuButton, controlSection, paramControls = {}, resetButton;
 	//Keep an array of trees grown
 	let trees = [];
 	let seeds = [];
@@ -76,11 +76,28 @@
 				setPreset(presetSelector.value);
 			});
 
+			controlSection = document.querySelector("section#controls");
+
+			menuButton = document.querySelector("input#menuButton");
+			menuButton.addEventListener("click", function(e){
+				//Make sure open/close prompt is hidden after clicked
+				document.querySelector("p#menuPrompt").style.visibility = "hidden";
+				//If control section is "hidden", set it to shown, and vice versa
+				if (controlSection.style.visibility == "visible"){
+					controlSection.style.visibility = "hidden";
+				}else{
+					controlSection.style.visibility = "visible";
+
+				}
+			});
+
 			//Initialize controls
 			presetSelector = document.querySelector("select#presets");
 			customPresetOption = presetSelector.querySelector("option#customPreset");
 			//Parameter inputs
 
+			paramControls.branchColorSliders = document.querySelector("section#branchColorSliders");
+			
 			paramControls.branchRSlider = document.querySelector("input#branchRSlider");
 			paramControls.branchRSlider.addEventListener("change", function(e){
 				currentParams.trunkColor.r = e.target.value;
@@ -96,6 +113,8 @@
 				currentParams.trunkColor.b = e.target.value;
 				updateControls();
 			});	
+
+			paramControls.leafColorSliders = document.querySelector("section#leafColorSliders");
 
 			paramControls.leafRSlider = document.querySelector("input#leafRSlider");
 			paramControls.leafRSlider.addEventListener("change", function(e){
@@ -295,10 +314,16 @@
 		paramControls.branchRSlider.value = currentParams.trunkColor.r;
 		paramControls.branchGSlider.value = currentParams.trunkColor.g;
 		paramControls.branchBSlider.value = currentParams.trunkColor.b;
+		paramControls.branchColorSliders.style.backgroundColor = `rgba(${currentParams.trunkColor.r},
+															${currentParams.trunkColor.g},
+															${currentParams.trunkColor.b}, 1)`;
 
 		paramControls.leafRSlider.value = currentParams.leafColor.r;
 		paramControls.leafGSlider.value = currentParams.leafColor.g;
 		paramControls.leafBSlider.value = currentParams.leafColor.b;
+		paramControls.leafColorSliders.style.backgroundColor = `rgba(${currentParams.leafColor.r},
+															${currentParams.leafColor.g},
+															${currentParams.leafColor.b}, 1)`;
 
 		paramControls.trunkLengthSlider.value = currentParams.trunkLength / globalParams.unit * 100;
 		paramControls.trunkWidthSlider.value = currentParams.trunkWidth / globalParams.unit * 100;

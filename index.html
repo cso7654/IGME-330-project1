@@ -3,88 +3,110 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Digital Forest</title>
+		<link href="https://fonts.googleapis.com/css2?family=David+Libre&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="styles/default-styles.css">
 		<script src="src/csoLIB.js"></script>
 		<script src="src/index.js"></script>
 	</head>
 	<body>
 		<canvas id="canvas" width=640 height=480></canvas>
+
 		<section id="controls">
-			<select id="presets">
-				<option value="borad" selected>Broad tree</option>
-				<option value="skinny">Skinny tree</option>
-				<option value="custom" id="customPreset">Custom</option>
-			</select>
-			<input type="button" id="resetButton" value="Reset">
-			<section id="parameters">
-				<section id="branchColor">
-					<h2>Branch Color</h2>
-					<label for="branchRSlider">R</label>
-					<input id="branchRSlider" name="branchRSlider" type="range" value="0" min="0" max="255">
-					<label for="branchGSlider">G</label>
-					<input id="branchGSlider" name="branchGSlider" type="range" value="0" min="0" max="255">
-					<label for="branchBSlider">B</label>
-					<input id="branchBSlider" name="branchBSlider" type="range" value="0" min="0" max="255">
-				</section>
-				<section id="leafColor">
-					<h2>Leaf Color</h2>
-					<label for="leafRSlider">R</label>
-					<input id="leafRSlider" name="leafRSlider" type="range" value="0" min="0" max="255">
-					<label for="leafGSlider">G</label>
-					<input id="leafGSlider" name="leafGSlider" type="range" value="0" min="0" max="255">
-					<label for="leafBSlider">B</label>
-					<input id="leafBSlider" name="leafBSlider" type="range" value="0" min="0" max="255">
+			<section id="controlPanel">
+				<section id="presetSection">
+					<select id="presets">
+						<option value="borad" selected>Broad tree</option>
+						<option value="skinny">Skinny tree</option>
+						<option value="custom" id="customPreset">Custom</option>
+					</select>
+					<input type="button" id="resetButton" value="Reset">
 				</section>
 
-				<label for="trunkLengthSlider">Trunk Length</label>
-				<input id="trunkLengthSlider" name="trunkLengthSlider" type="range" value="50" min="50" max="300">
+				<section id="parameters">
+					<section id="branchColor">
+						<h2>Branch Color</h2>
+						<section id="branchColorSliders">
+							<label for="branchRSlider">R</label>
+							<input id="branchRSlider" name="branchRSlider" type="range" value="0" min="0" max="255">
+							<br>
+							<label for="branchGSlider">G</label>
+							<input id="branchGSlider" name="branchGSlider" type="range" value="0" min="0" max="255">
+							<br>
+							<label for="branchBSlider">B</label>
+							<input id="branchBSlider" name="branchBSlider" type="range" value="0" min="0" max="255">	
+						</section>
+					</section>
+					<section id="leafColor">
+						<h2>Leaf Color</h2>
+						<section id="leafColorSliders">
+							<label for="leafRSlider">R</label>
+							<input id="leafRSlider" name="leafRSlider" type="range" value="0" min="0" max="255">
+							<br>
+							<label for="leafGSlider">G</label>
+							<input id="leafGSlider" name="leafGSlider" type="range" value="0" min="0" max="255">
+							<br>
+							<label for="leafBSlider">B</label>
+							<input id="leafBSlider" name="leafBSlider" type="range" value="0" min="0" max="255">	
+						</section>
+					</section>
 
-				<label for="trunkWidthSlider">Trunk Width</label>
-				<input id="trunkWidthSlider" name="trunkWidthSlider" type="range" value="0" min="0" max="100">
-					
-				<label for="branchLengthMultiplierSlider">Branch Length Multiplier</label>
-				<input id="branchLengthMultiplierSlider" name="branchLengthMultiplierSlider" type="range" value="1" min="1" max="150">
-					
-				<label for="branchLengthVarianceSlider">Branch Length Variance</label>
-				<input id="branchLengthVarianceSlider" name="branchLengthVarianceSlider" type="range" value="1" min="1" max="100">
-					
-				<label for="branchWidthMultiplierSlider">Branch Width Multiplier</label>
-				<input id="branchWidthMultiplierSlider" name="branchWidthMultiplierSlider" type="range" value="1" min="1" max="100">
-
-				<label for="branchWidthVarianceSlider">Branch Width Variance</label>
-				<input id="branchWidthVarianceSlider" name="branchWidthVarianceSlider" type="range" value="1" min="1" max="100">
-
-				<label for="maxLayersSlider">Max Layers</label>
-				<input id="maxLayersSlider" name="maxLayersSlider" type="range" value="1" min="1" max="10">
-
-				<label for="minLayersSlider">Min Layers</label>
-				<input id="minLayersSlider" name="minLayersSlider" type="range" value="1" min="1" max="10">
-
-				<label for="branchChanceSlider">Branch Chance</label>
-				<input id="branchChanceSlider" name="branchChanceSlider" type="range" value="1" min="1" max="10">
-
-				<label for="branchAngleVarianceSlider">Branch Angle Variance</label>
-				<input id="branchAngleVarianceSlider" name="branchAngleVarianceSlider" type="range" value="1" min="1" max="100">
-
-				<label for="leafSizeSlider">Leaf Size</label>
-				<input id="leafSizeSlider" name="leafSizeSlider" type="range" value="1" min="1" max="100">
-
-				<label for="leafSizeVarianceSlider">Leaf Size Variance</label>
-				<input id="leafSizeVarianceSlider" name="leafSizeVarianceSlider" type="range" value="1" min="1" max="100">
-
-				<label for="leafColorVarianceSlider">Leaf Color Variance</label>
-				<input id="leafColorVarianceSlider" name="leafColorVarianceSlider" type="range" value="1" min="1" max="100">
-
-				<label for="leafBunchesSlider">Leaf Bunches</label>
-				<input id="leafBunchesSlider" name="leafBunchesSlider" type="range" value="1" min="1" max="10">
-
-				<label for="growthTimeSlider">Growth Time</label>
-				<input id="growthTimeSlider" name="growthTimeSlider" type="range" value="1" min="1" max="120">
-
-				<label for="branchGrowthStagesSlider">Branch Growth Stages</label>
-				<input id="branchGrowthStagesSlider" name="branchGrowthStagesSlider" type="range" value="1" min="1" max="5">
-
+					<label for="trunkLengthSlider">Trunk Length</label>
+					<input id="trunkLengthSlider" name="trunkLengthSlider" type="range" value="50" min="50" max="300">
+	
+					<label for="trunkWidthSlider">Trunk Width</label>
+					<input id="trunkWidthSlider" name="trunkWidthSlider" type="range" value="0" min="0" max="100">
+						
+					<label for="branchLengthMultiplierSlider">Branch Length Multiplier</label>
+					<input id="branchLengthMultiplierSlider" name="branchLengthMultiplierSlider" type="range" value="1" min="1" max="150">
+						
+					<label for="branchLengthVarianceSlider">Branch Length Variance</label>
+					<input id="branchLengthVarianceSlider" name="branchLengthVarianceSlider" type="range" value="1" min="1" max="100">
+						
+					<label for="branchWidthMultiplierSlider">Branch Width Multiplier</label>
+					<input id="branchWidthMultiplierSlider" name="branchWidthMultiplierSlider" type="range" value="1" min="1" max="100">
+	
+					<label for="branchWidthVarianceSlider">Branch Width Variance</label>
+					<input id="branchWidthVarianceSlider" name="branchWidthVarianceSlider" type="range" value="1" min="1" max="100">
+	
+					<label for="maxLayersSlider">Max Layers</label>
+					<input id="maxLayersSlider" name="maxLayersSlider" type="range" value="1" min="1" max="10">
+	
+					<label for="minLayersSlider">Min Layers</label>
+					<input id="minLayersSlider" name="minLayersSlider" type="range" value="1" min="1" max="10">
+	
+					<label for="branchChanceSlider">Branch Chance</label>
+					<input id="branchChanceSlider" name="branchChanceSlider" type="range" value="1" min="1" max="10">
+	
+					<label for="branchAngleVarianceSlider">Branch Angle Variance</label>
+					<input id="branchAngleVarianceSlider" name="branchAngleVarianceSlider" type="range" value="1" min="1" max="100">
+	
+					<label for="leafSizeSlider">Leaf Size</label>
+					<input id="leafSizeSlider" name="leafSizeSlider" type="range" value="1" min="1" max="100">
+	
+					<label for="leafSizeVarianceSlider">Leaf Size Variance</label>
+					<input id="leafSizeVarianceSlider" name="leafSizeVarianceSlider" type="range" value="1" min="1" max="100">
+	
+					<label for="leafColorVarianceSlider">Leaf Color Variance</label>
+					<input id="leafColorVarianceSlider" name="leafColorVarianceSlider" type="range" value="1" min="1" max="100">
+	
+					<label for="leafBunchesSlider">Leaf Bunches</label>
+					<input id="leafBunchesSlider" name="leafBunchesSlider" type="range" value="1" min="1" max="10">
+	
+					<label for="growthTimeSlider">Growth Time</label>
+					<input id="growthTimeSlider" name="growthTimeSlider" type="range" value="1" min="1" max="120">
+	
+					<label for="branchGrowthStagesSlider">Branch Growth Stages</label>
+					<input id="branchGrowthStagesSlider" name="branchGrowthStagesSlider" type="range" value="1" min="1" max="5">
+	
+				</section>
+	
 			</section>
 		</section>
+
+		<div id="menuButtonContainer">
+			<p id="menuPrompt">Click here to open/close the menu</p>
+			<input type="button" id="menuButton" value="&#9776">
+		</div>
+
 	</body>
 </html>

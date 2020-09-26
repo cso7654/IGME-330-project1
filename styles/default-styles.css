@@ -1,11 +1,74 @@
 body{
-	margin: none;
-	padding: none;
+	margin: 0;
+	padding: 0;
+	font-family: 'David Libre', serif;
 }
 canvas{
+	position: absolute;
 	margin: 0;
+	padding: 0;
 	width: 100%;
-	height: calc(100vh - 15rem);
+	height: 100%;
 	top: 0;
 	left: 0;
+}
+#menuButtonContainer{
+	position: absolute;
+	display: block;
+	right: 0;
+	min-width: 5rem;
+	width: auto;
+	height: 5rem;
+	z-index: 10;
+	white-space: nowrap;
+}
+#menuButtonContainer>*{
+	display: inline-block;
+}
+input#menuButton{
+	margin: 0;
+	padding: 0;
+	background-color: rgba(0, 0, 0, 0);
+	width: 5rem;
+	height: 5rem;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	font-size: 4rem;
+	color: white;
+}
+section#controls{
+	position: fixed;
+	margin: 0;
+	padding: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	width: 100%;
+	height: 100%;
+	visibility: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+section#controlPanel{
+	margin-left: auto;
+	margin-right: auto;
+	width: 50rem;
+	max-width: 90%;
+}
+section#controlPanel>section{
+	display: grid;
+	margin: auto;
+	grid-template-columns: 50% 50%;
+}
+section#presetSection *{
+	padding: 1rem;
+}
+section#parameters>section, section#presetSection>*{
+	margin-bottom: 2rem;
+}
+section#branchColorSliders, section#leafColorSliders{
+	padding: 1rem;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
 }
